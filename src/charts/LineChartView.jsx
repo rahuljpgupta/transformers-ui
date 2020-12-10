@@ -1,18 +1,14 @@
 import {
     LineChart,
-    linearGradient,
     XAxis,
     YAxis,
     Tooltip,
     Legend,
     CartesianGrid,
-    Area,
-    Bar,
     Line,
   } from 'recharts';
-  import data from '../data/lineChart';
   
-  function LineChartView() {
+  function LineChartView({data}) {
     return (
         <LineChart width={730} height={250} data={data}
             margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
@@ -21,8 +17,8 @@ import {
             <YAxis />
             <Tooltip />
             <Legend />
-            <Line type="monotone" dataKey="pv" stroke="#8884d8" />
-            <Line type="monotone" dataKey="uv" stroke="#82ca9d" />
+            <Line type="monotone" dataKey="Actual" stroke="#8884d8" />
+            <Line type="monotone" dataKey="Prediction" stroke="#82ca9d" />
         </LineChart>
     );
   }

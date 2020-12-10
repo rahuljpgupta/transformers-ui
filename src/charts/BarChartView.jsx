@@ -1,18 +1,17 @@
 import {
     BarChart,
-    linearGradient,
     XAxis,
     YAxis,
     Tooltip,
     Legend,
     CartesianGrid,
-    Area,
     Bar,
-    Line,
   } from 'recharts';
-  import data from '../data/barChart';
   
-  function BarChartView() {
+  function BarChartView({handleChartItemClick, data}) {
+    const handleClick = e => {
+      handleChartItemClick(e);
+    }
     return (
         <BarChart width={730} height={250} data={data}>
             <CartesianGrid strokeDasharray="3 3" />
@@ -20,8 +19,8 @@ import {
             <YAxis />
             <Tooltip />
             <Legend />
-            <Bar dataKey="pv" fill="#8884d8" />
-            <Bar dataKey="uv" fill="#82ca9d" />
+            <Bar bsPrefix="bsPrefix-bar" onClick={handleClick} dataKey="Actual" fill="#8884d8" />
+            <Bar bsPrefix="bsPrefix-bar" onClick={handleClick} dataKey="Prediction" fill="#82ca9d" />
         </BarChart>
     );
   }

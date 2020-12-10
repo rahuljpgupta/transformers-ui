@@ -1,25 +1,30 @@
 import {
-    Navbar,
-    Button,
-    Nav,
-    Form,
-    FormControl
+    Dropdown,
 } from 'react-bootstrap';
   
-  function ChartDropdown() {
+  function ChartDropdown({ handleChartSelection, selectedChart }) {
+    const dropdownOptions = [
+        {eventKey:"Area", Name:"Area"},
+        {eventKey:"Bar", Name:"Bar"},
+        {eventKey:"Line", Name:"Line"},
+        {eventKey:"Composed", Name:"Composed"},
+    ];
+    const handleSelection = e => {
+        handleChartSelection(e);
+    }
     return (
-        <Navbar bg="dark" variant="dark">
-            <Navbar.Brand href="#home">Transformer</Navbar.Brand>
-            <Nav className="mr-auto">
-            <Nav.Link href="#home">Home</Nav.Link>
-            <Nav.Link href="#features">Features</Nav.Link>
-            <Nav.Link href="#pricing">Pricing</Nav.Link>
-            </Nav>
-            <Form inline>
-            <FormControl type="text" placeholder="Search" className="mr-sm-2" />
-            <Button variant="outline-info">Search</Button>
-            </Form>
-        </Navbar>
+        <Dropdown bsPrefix="chartdropdown-bsprefix" drop="right">
+        <Dropdown.Toggle variant="success" id="dropdown-basic">
+            {`Chart Type - ${selectedChart}`}
+        </Dropdown.Toggle>
+        <Dropdown.Menu>
+            {
+                dropdownOptions.map(item => (
+                    <Dropdown.Item eventKey={item.eventKey} key={item.eventKey} onSelect={handleSelection}>{item.Name}</Dropdown.Item>
+                ))
+            }
+        </Dropdown.Menu>
+        </Dropdown>
     );
   }
   

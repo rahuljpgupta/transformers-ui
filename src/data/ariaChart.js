@@ -1,45 +1,45 @@
 const data = [
     {
-      "name": "Page A",
-      "uv": 4000,
-      "pv": 2400,
-      "amt": 2400
+      "name": "Dec 11",
+      "Prediction": 400,
+      "Actual": 240,
+      "amt": 240
     },
     {
-      "name": "Page B",
-      "uv": 3000,
-      "pv": 1398,
-      "amt": 2210
+      "name": "Dec 12",
+      "Prediction": 300,
+      "Actual": 139,
+      "amt": 221
     },
     {
-      "name": "Page C",
-      "uv": 2000,
-      "pv": 9800,
-      "amt": 2290
+      "name": "Dec 13",
+      "Prediction": 200,
+      "Actual": 980,
+      "amt": 229
     },
     {
-      "name": "Page D",
-      "uv": 2780,
-      "pv": 3908,
-      "amt": 2000
+      "name": "Dec 14",
+      "Prediction": 278,
+      "Actual": 390,
+      "amt": 200
     },
     {
-      "name": "Page E",
-      "uv": 1890,
-      "pv": 4800,
-      "amt": 2181
+      "name": "Dec 15",
+      "Prediction": 189,
+      "Actual": 480,
+      "amt": 218
     },
     {
-      "name": "Page F",
-      "uv": 2390,
-      "pv": 3800,
-      "amt": 2500
+      "name": "Dec 16",
+      "Prediction": 239,
+      "Actual": 380,
+      "amt": 250
     },
     {
-      "name": "Page G",
-      "uv": 3490,
-      "pv": 4300,
-      "amt": 2100
+      "name": "Dec 17",
+      "Prediction": 349,
+      "Actual": 430,
+      "amt": 210
     }
   ]
 

@@ -1,18 +1,13 @@
 import {
     AreaChart,
-    linearGradient,
     XAxis,
     YAxis,
     Tooltip,
-    Legend,
     CartesianGrid,
     Area,
-    Bar,
-    Line,
   } from 'recharts';
-  import data from '../data/ariaChart';
   
-  function AreaChartView() {
+  function AreaChartView({data}) {
     return (
         <AreaChart width={730} height={250} data={data}
         margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
@@ -30,8 +25,8 @@ import {
         <YAxis />
         <CartesianGrid strokeDasharray="3 3" />
         <Tooltip />
-        <Area type="monotone" dataKey="uv" stroke="#8884d8" fillOpacity={1} fill="url(#colorUv)" />
-        <Area type="monotone" dataKey="pv" stroke="#82ca9d" fillOpacity={1} fill="url(#colorPv)" />
+        <Area type="monotone" dataKey="Prediction" stroke="#8884d8" fillOpacity={1} fill="url(#colorUv)" />
+        <Area type="monotone" dataKey="Actual" stroke="#82ca9d" fillOpacity={1} fill="url(#colorPv)" />
       </AreaChart>
     );
   }
