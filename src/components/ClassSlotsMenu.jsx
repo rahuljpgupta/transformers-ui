@@ -1,73 +1,84 @@
+import React, { Component } from 'react';
 import { Label, Menu } from 'semantic-ui-react';
 import {
   Popover,
   OverlayTrigger,
-  Modal,
-  Button
 } from 'react-bootstrap';
+import ClassCreationModal from './ClassCreationModal';
 
-function ClassSlotsMenu({ handleClassSelection, activeSuggestedClass,
-  suggestedClasses, isModalOpen, toggleModalState }) {
-
-  const handleMenuClick = (e, {name}) => {
-    handleClassSelection(name);
+class ClassSlotsMenu extends Component {
+  constructor(props) {
+    super(props);
+    this.state={
+      formData: {}
+    };
+  }
+  
+  handleMenuClick = (e, {name}) => {
+    this.props.handleClassSelection(name);
   }
 
-  const handleClose = () => {
-    toggleModalState();
+  handleCreateClassClick = () => {
+    this.props.handleCreateClass();
   }
 
-  const popover = (
+  onModalInputChange = (e, {name, value}) => {
+    this.setState({
+      formData: {
+        [name]: value
+      }
+    })
+  }
+
+  popover = () => (
     <Popover id="popover-basic">
-      <Popover.Title as="h3">Popover right</Popover.Title>
-      <Popover.Content>
-        Ad here's some <strong>amazing</strong> content. It's very engaging.
-        right?
-        <Button variant="secondary" onClick={toggleModalState}>
-            Open Modal
-        </Button>
-      </Popover.Content>
+      <Popover.Title as="h3">Choose class you want to create</Popover.Title>
+      <Popover.Content onClick={this.props.toggleModalState}>Yoga</Popover.Content>
+      <Popover.Content onClick={this.props.toggleModalState}>Pillates</Popover.Content>
+      <Popover.Content onClick={this.props.toggleModalState}>Gym</Popover.Content>
+      <Popover.Content onClick={this.props.toggleModalState}>HIIT</Popover.Content>
     </Popover>
   );
 
-  const ClassCreationModal = (
-    <Modal show={isModalOpen} onHide={toggleModalState}>
-        <Modal.Header closeButton>
-          <Modal.Title>Modal heading</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>Woohoo, you're reading this text in a modal!</Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={toggleModalState}>
-            Close
-          </Button>
-          <Button variant="primary" onClick={toggleModalState}>
-            Save Changes
-          </Button>
-        </Modal.Footer>
-      </Modal>
-  );
-
-    return (
-      <div>
-        <Menu vertical>
-            {suggestedClasses.map(suggestedClass => (
-              <OverlayTrigger trigger="click" placement="right" overlay={popover} rootClose={true}>
-                <Menu.Item
-                  key={suggestedClass.name}
-                  name={suggestedClass.name}
-                  value={suggestedClass.name}
-                  active={activeSuggestedClass === suggestedClass.name}
-                  onClick={handleMenuClick}
-                >
-                  <Label>{suggestedClass.classCount}</Label>
-                  {suggestedClass.time}
-                </Menu.Item>
-              </OverlayTrigger>
-            ))}
-        </Menu>
-        {ClassCreationModal}
-      </div>
-    );
+    render() {
+      console.log('state', this.state.formData)
+      const {isModalOpen, toggleModalState, handleCreateClassClick} = this.props;
+      return (
+        <div>
+          <Menu vertical>
+            <Menu.Item
+              key='menu-header'
+              active={true}
+              >
+                <h5>
+                {`Required Classes for Dec 11
+                  Available instructors - 4`}
+                </h5>
+            </Menu.Item>
+              {this.props.suggestedClasses.map(suggestedClass => (
+                <OverlayTrigger trigger="click" placement="right" overlay={this.popover()} rootClose={true}>
+                  <Menu.Item
+                    key={suggestedClass.name}
+                    name={suggestedClass.name}
+                    value={suggestedClass.name}
+                    active={this.props.activeSuggestedClass === suggestedClass.name}
+                    onClick={this.handleMenuClick}
+                  >
+                    <Label>{suggestedClass.classCount}</Label>
+                    {suggestedClass.time}
+                  </Menu.Item>
+                </OverlayTrigger>
+              ))}
+          </Menu>
+          <ClassCreationModal
+            isModalOpen={isModalOpen}
+            toggleModalState={toggleModalState}
+            handleCreateClassClick={handleCreateClassClick}
+            onModalInputChange={this.onModalInputChange}
+          />
+        </div>
+      );
+    }
   }
   
   export default ClassSlotsMenu;

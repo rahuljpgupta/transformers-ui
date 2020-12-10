@@ -25,3 +25,18 @@ g .recharts-bar-rectangle {
   cursor: pointer;
 }
 
+.popover-header {
+  margin-top: 0;
+  text-align: center;
+}
+
+.popover-body {
+  border: 1px solid lightgrey;
+  text-align: center;
+  cursor: pointer;
+}
+
+.popover {
+  z-index: 999 !important;
+}
+

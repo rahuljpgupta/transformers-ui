@@ -37,13 +37,19 @@ class App extends Component {
   }
 
   handleChartItemClick = e => {
-    console.log('ee', e)
     this.setState({
       selectedChartItem: e,
     })
   }
 
   toggleModalState = () => {
+    this.setState({
+      isModalOpen: !this.state.isModalOpen
+    })
+  }
+
+  handleCreateClass = () => {
+    //TODO: Hit the save api
     this.setState({
       isModalOpen: !this.state.isModalOpen
     })
@@ -73,6 +79,7 @@ class App extends Component {
           suggestedClasses={suggestedClasses}
           isModalOpen={this.state.isModalOpen}
           toggleModalState={this.toggleModalState}
+          handleCreateClass={this.handleCreateClass}
         />
         )}
       </Container>
