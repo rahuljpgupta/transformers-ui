@@ -136,17 +136,15 @@ class App extends Component {
       const mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
       const yyyy = today.getFullYear();
       start = mm + '/' + dd + '/' + yyyy;
-      start = '01/01/2020';
     } else {
       start = startDate;
     }
     if(!EndDate) {
       let today = new Date();
-      const dd7 = String(today.getDate() - 7).padStart(2, '0');
+      const dd7 = String(today.getDate() + 7).padStart(2, '0');
       const mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
       const yyyy = today.getFullYear();
       end = mm + '/' + dd7 + '/' + yyyy;
-      end = '01/09/2020';
     } else {
       end = EndDate;
     }
@@ -169,8 +167,8 @@ class App extends Component {
   }
 
   fetchClassSuggestion = (date) => {
-    const date1 = '1/3/2020'; //TODO: remove after api working properly
-    axios.get(`https://transformer-businessengine.azurewebsites.net/api/TrafficPredictor/ClassSuggestion?ClassSuggestedDate=${date1}`)
+    // const date1 = '1/3/2020'; //TODO: remove after api working properly
+    axios.get(`https://transformer-businessengine.azurewebsites.net/api/TrafficPredictor/ClassSuggestion?ClassSuggestedDate=${date}`)
     .then(res=> {
       this.setState({
         suggestedClassesPerDate: res.data.data
