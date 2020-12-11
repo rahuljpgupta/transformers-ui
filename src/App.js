@@ -13,15 +13,13 @@ import NavigationBar from './components/NavigationBar';
 import ChartHeader from './components/ChartHeader';
 import ChartContainer from './components/ChartContainer';
 import ClassSlotsMenu from './components/ClassSlotsMenu';
-import suggestedClasses from './data/suggestedClasses';
-import chartData from './data/ariaChart';
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.state={
       selectedChart: 'Bar',
-      activeSuggestedClass: '',
+      selectedClassTime: '',
       selectedChartItem: null,
       isModalOpen: false,
       selectedDates: null,
@@ -29,7 +27,24 @@ class App extends Component {
   }
 
   handleDatesChange = (event, data) => {
-    console.log('data', data)
+    if(data.value && data.value.length === 2 ) {
+      let startDate = new Date(data.value[0]);
+      let endDate = new Date(data.value[1]);
+      const dd1 = String(startDate.getDate()).padStart(2, '0');
+      const mm1 = String(startDate.getMonth() + 1).padStart(2, '0');
+      const yyyy1 = startDate.getFullYear();
+      const dd2 = String(endDate.getDate()).padStart(2, '0');
+      const mm2 = String(endDate.getMonth() + 1).padStart(2, '0');
+      const yyyy2 = endDate.getFullYear();
+
+      startDate = mm1 + '/' + dd1 + '/' + yyyy1;
+      endDate = mm2 + '/' + dd2 + '/' + yyyy2;
+
+      this.fetchTrafficPrediction(startDate, endDate);
+    } else if (data.value === null) {
+      this.fetchTrafficPrediction();
+    }
+    
     this.setState({
       selectedDates: data.value
     })
@@ -41,13 +56,23 @@ class App extends Component {
     })
   }
 
-  handleClassSelection = (name) => {
+  handleClassTimeSelection = (name) => {
     this.setState({
-      activeSuggestedClass: name,
+      selectedClassTime: name,
     })
   }
 
   handleChartItemClick = e => {
+    let date = new Date(e.classDate);
+    const  options = { month: 'long'};
+    const mm = new Intl.DateTimeFormat('en-US', options).format(date);
+    const dd = String(date.getDate()).padStart(2, '0');
+    const yyyy = date.getFullYear();
+    date = mm + '/' + dd + '/' + yyyy;
+   
+    this.fetchAvailableInstructors(date);
+    this.fetchClassSuggestion(date);
+
     this.setState({
       selectedChartItem: e,
     })
@@ -59,13 +84,40 @@ class App extends Component {
     })
   }
 
-  handleCreateClass = () => {
-    console.log('handleCreateClass');
-    this.postCreateClass();
-    //TODO: Hit the save api
+  handleCreateClass = (formData) => {
+    if(!formData.instructor) {
+      alert('Please select the instructor for the class');
+      return;
+    }
+    var today = new Date();
+    var dd = String(today.getDate()).padStart(2, '0');
+    var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+    var yyyy = today.getFullYear();
+    today = yyyy + '-' + mm + '-' + dd;
+    
+    const startTime = this.state.selectedClassTime && this.state.selectedClassTime.name;
+    const endTime = (Number(startTime.split(':')[0]) + 1).toString() + ':00';
+
+    const payload = {
+      scheduledDate: today,
+      startTime,
+      endTime,
+      className: this.state.selectedClassType,
+      instructorId: formData.instructor,
+      capacity: Number(formData.range ? formData.range : 50) ,
+      classId: 0
+    }
+    this.postCreateClass(payload);
     this.setState({
       selectedChartItem: null,
       isModalOpen: !this.state.isModalOpen
+    })
+  }
+
+  handleClassTypeClick = className => {
+    this.setState({
+      selectedClassType: className,
+      isModalOpen: true
     })
   }
 
@@ -76,53 +128,69 @@ class App extends Component {
     });
   }
 
-  fetchTrafficPrediction = () => {
-    axios.get('https://transformer-businessengine.azurewebsites.net/api/TrafficPredictor')
-    .then(res=> {
-      console.log('fetchTrafficPrediction', res);
-    });
-  }
-
-  fetchClassSuggestion = () => {
-    axios.get('https://transformer-businessengine.azurewebsites.net/api/TrafficPredictor/ClassSuggestion')
-    .then(res=> {
-      console.log('fetchClassSuggestion', res);
-    });
-  }
-
-  fetchAvailableInstructors = () => {
-    axios.get('https://transformer-businessengine.azurewebsites.net/api/TrafficPredictor/AvailableInstructor')
-    .then(res=> {
-      console.log('fetchAvailableInstructors', res);
-    });
-  }
-
-  postCreateClass = () => {
-    const classToCreate = {
-      clientId: "string",
-      scheduledDate: "2020-12-11T05:48:12.504Z",
-      startTime: "string",
-      endTime: "string",
-      className: "string",
-      classType: "string",
-      instructorId: 0,
-      capacity: 0,
-      description: "string"
+  fetchTrafficPrediction = (startDate, EndDate) => {
+    let start, end;
+    if(!startDate) {
+      let today = new Date();
+      const dd = String(today.getDate()).padStart(2, '0');
+      const mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+      const yyyy = today.getFullYear();
+      start = mm + '/' + dd + '/' + yyyy;
+      start = '01/01/2020';
+    } else {
+      start = startDate;
     }
-    axios.post('https://transformer-businessengine.azurewebsites.net/api/TrafficPredictor', classToCreate)
+    if(!EndDate) {
+      let today = new Date();
+      const dd7 = String(today.getDate() - 7).padStart(2, '0');
+      const mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+      const yyyy = today.getFullYear();
+      end = mm + '/' + dd7 + '/' + yyyy;
+      end = '01/09/2020';
+    } else {
+      end = EndDate;
+    }
+
+    axios.get(`https://transformer-businessengine.azurewebsites.net/api/TrafficPredictor?StartDate=${start}&EndDate=${end}`)
     .then(res=> {
-      console.log('postCreateClass', res);
+      this.setState({
+        trfficPredictionData: res.data.data
+      })
+    });
+  }
+
+  fetchAvailableInstructors = (date) => {
+    axios.get(`https://transformer-businessengine.azurewebsites.net/api/TrafficPredictor/AvailableInstructor/?AvailableDate=${date}`)
+    .then(res=> {
+      this.setState({
+        availableInstructors: res.data.data.availableInstructors
+      })
+    });
+  }
+
+  fetchClassSuggestion = (date) => {
+    const date1 = '1/3/2020'; //TODO: remove after api working properly
+    axios.get(`https://transformer-businessengine.azurewebsites.net/api/TrafficPredictor/ClassSuggestion?ClassSuggestedDate=${date1}`)
+    .then(res=> {
+      this.setState({
+        suggestedClassesPerDate: res.data.data
+      })
+    });
+  }
+
+  postCreateClass = (payload) => {
+    axios.post('https://transformer-businessengine.azurewebsites.net/api/ScheduleClass', payload)
+    .then(res=> {
+      alert("Class created successfully")
     });
   }
 
   componentDidMount() {
-    this.fetchForecast();
     this.fetchTrafficPrediction();
-    this.fetchClassSuggestion();
-    this.fetchAvailableInstructors();
   }
   
   render() {
+    const { suggestedClassesPerDate } = this.state;
     return (
       <div className="App">
       <NavigationBar />
@@ -131,7 +199,7 @@ class App extends Component {
         <Row>
           <Col>
             <ChartContainer
-              chartData={chartData}
+              chartData={this.state.trfficPredictionData}
               selectedChart={this.state.selectedChart}
               handleChartItemClick={this.handleChartItemClick}
             />
@@ -146,12 +214,16 @@ class App extends Component {
         </Row>
         {this.state.selectedChartItem && (
         <ClassSlotsMenu
-          handleClassSelection={this.handleClassSelection}
-          activeSuggestedClass={this.state.activeSuggestedClass}
-          suggestedClasses={suggestedClasses}
+          handleClassTimeSelection={this.handleClassTimeSelection}
+          selectedClassTime={this.state.selectedClassTime}
+          suggestedClassesPerDate={suggestedClassesPerDate}
           isModalOpen={this.state.isModalOpen}
           toggleModalState={this.toggleModalState}
           handleCreateClass={this.handleCreateClass}
+          selectedChartItem={this.state.selectedChartItem}
+          availableInstructors={this.state.availableInstructors}
+          handleClassTypeClick={this.handleClassTypeClick}
+          selectedClassType={this.state.selectedClassType}
         />
         )}
       </Container>

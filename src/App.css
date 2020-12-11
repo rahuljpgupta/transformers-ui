@@ -1,5 +1,5 @@
 #root {
-  background-color: orange;
+  /* background-color: orange; */
   min-height: 100vh;
   padding-bottom: 10rem;
 }
@@ -40,3 +40,7 @@ g .recharts-bar-rectangle {
   z-index: 999 !important;
 }
 
+#branding {
+  position: absolute;
+  right: 10px;
+}
