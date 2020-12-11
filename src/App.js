@@ -5,6 +5,9 @@ import {
   Row,
   Col,
 } from 'react-bootstrap';
+import axios from 'axios';
+import SemanticDatepicker from 'react-semantic-ui-datepickers';
+import 'react-semantic-ui-datepickers/dist/react-semantic-ui-datepickers.css';
 import ChartDropdown from './components/ChartDropdown';
 import NavigationBar from './components/NavigationBar';
 import ChartHeader from './components/ChartHeader';
@@ -20,9 +23,17 @@ class App extends Component {
       selectedChart: 'Bar',
       activeSuggestedClass: '',
       selectedChartItem: null,
-      isModalOpen: false
+      isModalOpen: false,
+      selectedDates: null,
     };
   }
+
+  handleDatesChange = (event, data) => {
+    console.log('data', data)
+    this.setState({
+      selectedDates: data.value
+    })
+  };
 
   handleChartSelection = e => {
     this.setState({
@@ -49,11 +60,68 @@ class App extends Component {
   }
 
   handleCreateClass = () => {
+    console.log('handleCreateClass');
+    this.postCreateClass();
     //TODO: Hit the save api
     this.setState({
+      selectedChartItem: null,
       isModalOpen: !this.state.isModalOpen
     })
   }
+
+  fetchForecast = () => {
+    axios.get('https://transformer-businessengine.azurewebsites.net/api/Forecast')
+    .then(res=> {
+      console.log('fetchForecast', res);
+    });
+  }
+
+  fetchTrafficPrediction = () => {
+    axios.get('https://transformer-businessengine.azurewebsites.net/api/TrafficPredictor')
+    .then(res=> {
+      console.log('fetchTrafficPrediction', res);
+    });
+  }
+
+  fetchClassSuggestion = () => {
+    axios.get('https://transformer-businessengine.azurewebsites.net/api/TrafficPredictor/ClassSuggestion')
+    .then(res=> {
+      console.log('fetchClassSuggestion', res);
+    });
+  }
+
+  fetchAvailableInstructors = () => {
+    axios.get('https://transformer-businessengine.azurewebsites.net/api/TrafficPredictor/AvailableInstructor')
+    .then(res=> {
+      console.log('fetchAvailableInstructors', res);
+    });
+  }
+
+  postCreateClass = () => {
+    const classToCreate = {
+      clientId: "string",
+      scheduledDate: "2020-12-11T05:48:12.504Z",
+      startTime: "string",
+      endTime: "string",
+      className: "string",
+      classType: "string",
+      instructorId: 0,
+      capacity: 0,
+      description: "string"
+    }
+    axios.post('https://transformer-businessengine.azurewebsites.net/api/TrafficPredictor', classToCreate)
+    .then(res=> {
+      console.log('postCreateClass', res);
+    });
+  }
+
+  componentDidMount() {
+    this.fetchForecast();
+    this.fetchTrafficPrediction();
+    this.fetchClassSuggestion();
+    this.fetchAvailableInstructors();
+  }
+  
   render() {
     return (
       <div className="App">
@@ -68,7 +136,11 @@ class App extends Component {
               handleChartItemClick={this.handleChartItemClick}
             />
           </Col>
+          <div>
             <ChartDropdown handleChartSelection={this.handleChartSelection} selectedChart={this.state.selectedChart} />
+            <h3>Select dates</h3>
+            <SemanticDatepicker onChange={this.handleDatesChange} type="range" />
+          </div>
           <Col>
           </Col>
         </Row>

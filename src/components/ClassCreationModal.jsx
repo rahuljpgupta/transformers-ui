@@ -17,7 +17,7 @@ const ClassCreationModal = ({isModalOpen, toggleModalState, handleCreateClassCli
             <Form.Row>
                 <Form.Group as={Col} controlId="formGridClassType">
                 <Form.Label>Class Type</Form.Label>
-                <Form.Control type="classType" placeholder="Class Type" disabled onChange={onModalInputChange} />
+                <Form.Control type="classType" placeholder="Class Type" value="Yoga" disabled onChange={onModalInputChange} />
                 </Form.Group>
 
                 <Form.Group as={Col} controlId="exampleForm.SelectCustom">

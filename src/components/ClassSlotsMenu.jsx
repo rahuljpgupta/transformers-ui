@@ -73,7 +73,7 @@ class ClassSlotsMenu extends Component {
           <ClassCreationModal
             isModalOpen={isModalOpen}
             toggleModalState={toggleModalState}
-            handleCreateClassClick={handleCreateClassClick}
+            handleCreateClassClick={this.handleCreateClassClick}
             onModalInputChange={this.onModalInputChange}
           />
         </div>
