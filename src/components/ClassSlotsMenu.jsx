@@ -116,7 +116,7 @@ class ClassSlotsMenu extends Component {
                   (Available instructors - ${availableInstructors ? availableInstructors.length : 0 })`}
                 </h5>
             </Menu.Item>
-              {suggestedClassesPerDate && suggestedClassesPerDate.map(suggestedClassPerDate => (
+              {suggestedClassesPerDate && suggestedClassesPerDate.length > 0 ? suggestedClassesPerDate.map(suggestedClassPerDate => (
                 <OverlayTrigger trigger="click" placement="right" overlay={this.popover()} rootClose={true}>
                   <Menu.Item
                     key={this.getParsedDate(suggestedClassPerDate.classSuggestedDate)}
@@ -129,7 +129,16 @@ class ClassSlotsMenu extends Component {
                     {this.getParsedDate(suggestedClassPerDate.classSuggestedDate)}
                   </Menu.Item>
                 </OverlayTrigger>
-              ))}
+              )) : (
+                <Menu.Item
+              key='no-item'
+              active={true}
+              >
+                <h5>
+                  No Suggestion for this date.
+                </h5>
+            </Menu.Item>
+              )}
           </Menu>
           <ClassCreationModal
             isModalOpen={isModalOpen}

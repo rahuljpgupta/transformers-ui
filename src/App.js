@@ -154,7 +154,7 @@ class App extends Component {
     axios.get(`https://transformer-businessengine.azurewebsites.net/api/TrafficPredictor?StartDate=${start}&EndDate=${end}`)
     .then(res=> {
       this.setState({
-        trfficPredictionData: res.data.data
+        trafficPredictionData: res.data.data
       })
     });
   }
@@ -199,7 +199,7 @@ class App extends Component {
         <Row>
           <Col>
             <ChartContainer
-              chartData={this.state.trfficPredictionData}
+              chartData={this.state.trafficPredictionData}
               selectedChart={this.state.selectedChart}
               handleChartItemClick={this.handleChartItemClick}
             />
