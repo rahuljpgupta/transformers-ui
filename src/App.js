@@ -85,7 +85,7 @@ class App extends Component {
   }
 
   handleCreateClass = (formData) => {
-    if(!formData.instructor) {
+    if(formData.instructor === undefined || formData.instructor === null ) {
       alert('Please select the instructor for the class');
       return;
     }
@@ -168,10 +168,13 @@ class App extends Component {
 
   fetchClassSuggestion = (date) => {
     // const date1 = '1/3/2020'; //TODO: remove after api working properly
+    this.setState({
+      suggestedClassesPerDate: null
+    })
     axios.get(`https://transformer-businessengine.azurewebsites.net/api/TrafficPredictor/ClassSuggestion?ClassSuggestedDate=${date}`)
     .then(res=> {
       this.setState({
-        suggestedClassesPerDate: res.data.data
+        suggestedClassesPerDate: res.data.data ? res.data.data : []
       })
     });
   }
