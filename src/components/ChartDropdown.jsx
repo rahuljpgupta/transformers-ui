@@ -13,7 +13,7 @@ import {
         handleChartSelection(e);
     }
     return (
-        <Dropdown bsPrefix="chartdropdown-bsprefix" drop="right">
+        <Dropdown drop="right">
         <Dropdown.Toggle variant="success" id="dropdown-basic">
             {`Chart Type - ${selectedChart}`}
         </Dropdown.Toggle>

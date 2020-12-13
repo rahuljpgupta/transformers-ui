@@ -75,7 +75,10 @@ class ClassSlotsMenu extends Component {
   getParsedDate = date => {
     const dateObj = new Date(date);
 
-    return dateObj.toLocaleTimeString('en-US');
+    const localTime = dateObj.toLocaleTimeString('en-US');
+    const startTime = `${localTime.split(':')[0]} : ${localTime.split(':')[1]}`;
+    const endTime = `${Number(localTime.split(':')[0]) + 1} : ${localTime.split(':')[1]}`;
+    return `${startTime} ${localTime.slice(-2)} - ${endTime} ${localTime.slice(-2)}`; 
   }
 
   getAvailableInstructorsPerClass = () => {

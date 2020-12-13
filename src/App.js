@@ -206,27 +206,35 @@ class App extends Component {
             />
           </Col>
           <div>
-            <ChartDropdown handleChartSelection={this.handleChartSelection} selectedChart={this.state.selectedChart} />
-            <h3>Select dates</h3>
             <SemanticDatepicker onChange={this.handleDatesChange} type="range" />
           </div>
           <Col>
           </Col>
         </Row>
-        {this.state.selectedChartItem && (
-        <ClassSlotsMenu
-          handleClassTimeSelection={this.handleClassTimeSelection}
-          selectedClassTime={this.state.selectedClassTime}
-          suggestedClassesPerDate={suggestedClassesPerDate}
-          isModalOpen={this.state.isModalOpen}
-          toggleModalState={this.toggleModalState}
-          handleCreateClass={this.handleCreateClass}
-          selectedChartItem={this.state.selectedChartItem}
-          availableInstructors={this.state.availableInstructors}
-          handleClassTypeClick={this.handleClassTypeClick}
-          selectedClassType={this.state.selectedClassType}
-        />
-        )}
+
+        <Row>
+          <Col>
+          {this.state.selectedChartItem && (
+          <ClassSlotsMenu
+            handleClassTimeSelection={this.handleClassTimeSelection}
+            selectedClassTime={this.state.selectedClassTime}
+            suggestedClassesPerDate={suggestedClassesPerDate}
+            isModalOpen={this.state.isModalOpen}
+            toggleModalState={this.toggleModalState}
+            handleCreateClass={this.handleCreateClass}
+            selectedChartItem={this.state.selectedChartItem}
+            availableInstructors={this.state.availableInstructors}
+            handleClassTypeClick={this.handleClassTypeClick}
+            selectedClassType={this.state.selectedClassType}
+          />
+          )}
+          </Col>
+          <div style={{marginLeft: '15rem'}}>
+            <ChartDropdown bsPrefix="chartdropdown-bsprefix" handleChartSelection={this.handleChartSelection} selectedChart={this.state.selectedChart} />
+          </div>
+          <Col>
+          </Col>
+        </Row>
       </Container>
     </div>
     );
