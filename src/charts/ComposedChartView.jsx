@@ -36,7 +36,7 @@ function ComposedChartView({handleChartItemClick, data}) {
         <Legend />
         <CartesianGrid stroke="#f5f5f5" />
         <Area type="monotone" dataKey="upperEstimate" fill="#cfeb34" stroke="#b4eb34" />
-        <Bar onClick={handleClick} dataKey="actualClasses" barSize={20} fill="#413ea0" />
+        <Bar onClick={handleClick} dataKey="actual" barSize={20} fill="#413ea0" />
         <Line type="monotone" dataKey="forecast" stroke="#ff7300" />
       </ComposedChart>
   );

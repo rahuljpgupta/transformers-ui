@@ -31,7 +31,7 @@ import {
             <YAxis />
             <Tooltip />
             <Legend />
-            <Bar bsPrefix="bsPrefix-bar" onClick={handleClick} dataKey="actualClasses" fill="#8884d8" />
+            <Bar bsPrefix="bsPrefix-bar" onClick={handleClick} dataKey="actual" fill="#8884d8" />
             <Bar bsPrefix="bsPrefix-bar" onClick={handleClick} dataKey="forecast" fill="#82ca9d" />
         </BarChart>
     );

@@ -41,7 +41,7 @@ import {
         <CartesianGrid strokeDasharray="3 3" />
         <Tooltip />
         <Area onClick={handleClick} type="monotone" dataKey="forecast" stroke="#8884d8" fillOpacity={1} fill="url(#colorUv)" />
-        <Area onClick={handleClick} type="monotone" dataKey="actualClasses" stroke="#82ca9d" fillOpacity={1} fill="url(#colorPv)" />
+        <Area onClick={handleClick} type="monotone" dataKey="actual" stroke="#82ca9d" fillOpacity={1} fill="url(#colorPv)" />
       </AreaChart>
     );
   }

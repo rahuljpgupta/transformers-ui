@@ -72,13 +72,17 @@ class ClassSlotsMenu extends Component {
     return mm.substr(0, 3) + ' ' + dd;
   }
 
-  getParsedDate = date => {
-    const dateObj = new Date(date);
+  getParsedDate = (startDate, endDate) => {
+    const dateObjStart = new Date(startDate);
+    const dateObjEnd = new Date(endDate);
 
-    const localTime = dateObj.toLocaleTimeString('en-US');
-    const startTime = `${localTime.split(':')[0]} : ${localTime.split(':')[1]}`;
-    const endTime = `${Number(localTime.split(':')[0]) + 1} : ${localTime.split(':')[1]}`;
-    return `${startTime} ${localTime.slice(-2)} - ${endTime} ${localTime.slice(-2)}`; 
+    const localStartTime = dateObjStart.toLocaleTimeString('en-US', { hour: '2-digit' ,minute: '2-digit' });
+    const localEndTime = dateObjEnd.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+    // const startTime = `${localTime.split(':')[0]} : ${localTime.split(':')[1]}`;
+    // const endTime = `${Number(localTime.split(':')[0]) + 1} : ${localTime.split(':')[1]}`;
+    // return `${startTime} ${localTime.slice(-2)} - ${endTime} ${localTime.slice(-2)}`;
+    
+    return `${localStartTime} - ${localEndTime}`;
   }
 
   getAvailableInstructorsPerClass = () => {
@@ -130,7 +134,7 @@ class ClassSlotsMenu extends Component {
                     onClick={this.handleMenuClick}
                   >
                     <Label>{suggestedClassPerDate.classSuggestions.length}</Label>
-                    {this.getParsedDate(suggestedClassPerDate.classSuggestedDate)}
+                    {this.getParsedDate(suggestedClassPerDate.classSuggestedDate, suggestedClassPerDate.classSuggestedEndDate)}
                   </Menu.Item>
                   </OverlayTrigger>
                 )) : (<Menu.Item

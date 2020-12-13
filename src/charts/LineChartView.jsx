@@ -34,7 +34,7 @@ import {
             <Tooltip />
             <Legend />
             <Line onClick={handleClick} type="monotone" dataKey="upperEstimate" stroke="#b4eb34" />
-            <Line onClick={handleClick} type="monotone" dataKey="actualClasses" stroke="#8884d8" />
+            <Line onClick={handleClick} type="monotone" dataKey="actual" stroke="#8884d8" />
             <Line onClick={handleClick} type="monotone" dataKey="forecast" stroke="#82ca9d" />
         </LineChart>
     );
