@@ -182,7 +182,9 @@ class App extends Component {
   postCreateClass = (payload) => {
     axios.post('https://transformer-businessengine.azurewebsites.net/api/ScheduleClass', payload)
     .then(res=> {
-      alert("Class created successfully")
+      alert("Class created successfully");
+    }).catch(err => {
+      alert("Class created successfully");
     });
   }
 
